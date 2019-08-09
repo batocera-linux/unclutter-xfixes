@@ -37,7 +37,7 @@ all: clean $(TARGET) mans
 
 .PHONY: $(TARGET)
 $(TARGET): $(OBJS)
-	$(LD) $(OBJS) $(LDFLAGS) -o "$(TARGET)"
+	$(CC) $(OBJS) $(LDFLAGS) -o "$(TARGET)"
 
 $(ODIR)/%.o: $(SDIR)/%.c $(INCS)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o "$@" -c "$<"
