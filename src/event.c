@@ -192,11 +192,11 @@ static void event_init_ipc(void) {
 }
 
 static void sigusr1_cb(EV_P_ ev_signal *w, int revents) {
-    DLOG("Received signal %i", SIGUSR1);
+    DLOG("Received signal %i.", SIGUSR1);
     cursor_show();
 }
 
 static void sigusr2_cb(EV_P_ ev_signal *w, int revents) {
-    DLOG("Received signal %i", SIGUSR2);
+    DLOG("Received signal %i.", SIGUSR2);
     cursor_hide();
 }
