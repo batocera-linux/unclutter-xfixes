@@ -97,6 +97,7 @@ static void parse_args(int argc, char *argv[]) {
         { "version", no_argument, 0, 'v' },
         { "help", no_argument, 0, 'h' },
         { "debug", no_argument, 0, 0 },
+
         { 0, 0, 0, 0 }
     };
 
@@ -145,7 +146,10 @@ static void parse_args(int argc, char *argv[]) {
                 } else if (OPT_NAME_IS("debug")) {
                     config.debug = true;
                     break;
-                } else if (OPT_NAME_IS("keystroke") || OPT_NAME_IS("grab") || OPT_NAME_IS("noevents") || OPT_NAME_IS("reset")) {
+                } else if (OPT_NAME_IS("noevents")) {
+                    config.noevents = true;
+                    break;
+                } else if (OPT_NAME_IS("keystroke") || OPT_NAME_IS("grab") || OPT_NAME_IS("reset")) {
                     ELOG("Using unsupported unclutter argument \"%s\", ignoring.", opt_name);
                     break;
                 }

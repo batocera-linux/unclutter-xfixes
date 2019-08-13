@@ -15,6 +15,7 @@ typedef struct Config {
     bool debug;
     bool onescreen;
     bool ignore_matches;
+    bool noevents;
     match_t *matches;
 } Config;
 
@@ -22,4 +23,3 @@ typedef struct coordinates_t {
     int x;
     int y;
 } coordinates_t;
-

@@ -4,6 +4,8 @@
 static struct ev_loop *loop;
 static struct ev_timer *idle_watcher;
 static struct ev_io *x_watcher;
+static struct ev_signal *sigusr1_watcher;
+static struct ev_signal *sigusr2_watcher;
 static struct ev_check *x_check;
 
 static coordinates_t last_cursor_pos;
@@ -12,17 +14,24 @@ static Window last_avoided = None;
 /* Forward declarations */
 static void event_init_x_loop(void);
 static void event_init_timer(void);
+static void event_init_ipc(void);
 static void x_cb(EV_P_ ev_io *w, int revents);
 static void x_check_cb(EV_P_ ev_check *w, int revents);
 static void idle_cb(EV_P_ ev_timer *w, int revents);
+static void sigusr1_cb(EV_P_ ev_signal *w, int revents);
+static void sigusr2_cb(EV_P_ ev_signal *w, int revents);
 static void event_select_xi(void);
 
 void event_init(void) {
     event_select_xi();
 
     loop = EV_DEFAULT;
-    event_init_x_loop();
-    event_init_timer();
+    if (!config.noevents) {
+        event_init_x_loop();
+        event_init_timer();
+    } else
+        cursor_hide();
+    event_init_ipc();
     ev_run(loop, 0);
 }
 
@@ -171,4 +180,23 @@ static void event_select_xi(void) {
 
     XISelectEvents(display, active_root, masks, 1);
     XFlush(display);
+}
+
+static void event_init_ipc(void) {
+    sigusr1_watcher = calloc(sizeof(struct ev_signal), 1);
+    sigusr2_watcher = calloc(sizeof(struct ev_signal), 1);
+    ev_signal_init(sigusr1_watcher, sigusr1_cb, SIGUSR1);
+    ev_signal_init(sigusr2_watcher, sigusr2_cb, SIGUSR2);
+    ev_signal_start(loop, sigusr1_watcher);
+    ev_signal_start(loop, sigusr2_watcher);
+}
+
+static void sigusr1_cb(EV_P_ ev_signal *w, int revents) {
+    DLOG("Received signal %i", SIGUSR1);
+    cursor_show();
+}
+
+static void sigusr2_cb(EV_P_ ev_signal *w, int revents) {
+    DLOG("Received signal %i", SIGUSR2);
+    cursor_hide();
 }
