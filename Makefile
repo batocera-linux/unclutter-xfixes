@@ -1,5 +1,5 @@
 TARGET = unclutter
-VERSION = 1.5
+VERSION = 1.5~batocera
 SDIR = src
 IDIR = include
 ODIR = obj
