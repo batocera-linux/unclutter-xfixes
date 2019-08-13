@@ -1,0 +1,12 @@
+#!/bin/bash
+
+while getopts ":sh" opt; do
+	case ${opt} in
+		s ) killall -USR1 unclutter
+			;;
+		h ) killall -USR2 unclutter
+			;;
+		\? ) echo "Usage: $(basename $0) [-s] [-h]"
+			;;
+	esac
+done
